@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>add remove node</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript">
+
+        window.onload = function () {
+            
+            // 鼠标移动改变背景,可以通过给每行绑定鼠标移上事件和鼠标移除事件来改变所在行背景色。
+
+            var trs = document.getElementsByTagName("tr");
+            for (var i = 0; i < trs.length; i++) {
+                trs[i].onmouseover = function () {
+                    this.style.backgroundColor = "#f2f2f2";
+                }
+                trs[i].onmouseout = function () {
+                    this.style.backgroundColor = "#fff";
+                }
+            }
+        }
+
+        // 编写一个函数，供添加按钮调用，动态在表格的最后一行添加子节点；
+        function addRow() {
+            var table = document.getElementById("table");
+            var tr = document.createElement("tr");
+            var td1 = document.createElement("td");
+            var td2 = document.createElement("td");
+            var td3 = document.createElement("td");
+
+            td1.innerHTML = "00" + (table.childNodes.length + 1);
+            td2.innerHTML = "雷广";
+
+            var a = document.createElement("a");
+            a.href = "javascript:;";
+            a.setAttribute("onclick", "deleteRow(this)");
+            a.innerHTML = "删除";
+
+            /*
+             Note： 
+                错误写法：a.onclick = "deleteRow(this)";  在这里是无效的点击事件。
+                正确写法1：a.onclick = deleteRow;    因为 onclick = () => {}，即 onclick可以等于一个函数引用。关于传参：deleteRow.bind(null, a);
+                正确写法2：a.setAttribute("onclick","deleteRow(this)");
+                正确写法3：td3.innerHTML = "<a href='javascript:;' onclick='deleteRow(this)'>删除</a>";
+             */
+
+            table.appendChild(tr);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            td3.appendChild(a);
+        }
+
+
+        // 创建删除函数
+        function deleteRow(obj) {
+            var tr = obj.parentNode.parentNode;
+            tr.remove();    // or: tr.parentNode.removeChild(tr);
+            tr = null;
+        }
+
+
+    </script>
+</head>
+
+<body>
+    <table border="1" width="50%" id="table">
+        <tr>
+            <th>学号</th>
+            <th>姓名</th>
+            <th>操作</th>
+        </tr>
+
+        <tr>
+            <td>001</td>
+            <td>张三</td>
+            <td><a href="javascript:;" onclick="deleteRow(this)">删除</a></td>
+            <!--在删除按钮上添加点击事件  -->
+        </tr>
+
+        <tr>
+            <td>002</td>
+            <td>李四</td>
+            <td><a href="javascript:;" onclick="deleteRow(this)">删除</a></td>
+            <!--在删除按钮上添加点击事件  -->
+        </tr>
+
+    </table>
+    <input type="button" value="添加一行" onclick="addRow()" />
+    <!--在添加按钮上添加点击事件  -->
+</body>
+
+</html>
